@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:fpa_projeto/android/android.app.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   if (Platform.isIOS){

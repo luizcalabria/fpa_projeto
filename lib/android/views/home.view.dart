@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpa_projeto/android/views/details.view.dart';
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,16 +19,47 @@ class HomeView extends StatelessWidget {
                 )
             ),
             Text(
-              "Monitoramento de Áreas de Risco",
+              "Meus Processos",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor,
-                fontSize: 15,
+                fontSize: 35,
               ),
               textAlign: TextAlign.left,
             ),
           ],
         ),
+      ),
+      body: ListView(
+        children: <Widget>[
+          ListTile(
+            title: Text(
+                "00000000"
+            ),
+            trailing: FlatButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsView()
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.description,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).accentColor,
+        )
       ),
     );
   }
