@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               width: 128,
               height: 128,
-              child: Image.asset("assets/Brasao_do_Recife.png"),
+              child: Image.asset("assets/images/Brasao_do_Recife.png"),
             ),
             SizedBox(
               height: 20,
@@ -95,14 +95,14 @@ class LoginPage extends StatelessWidget {
                         "Login",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                         ),
                         textAlign: TextAlign.left,
                       ),
                       Container(
                         child: SizedBox(
-                          child: Image.asset("assets/defesa_civil.jpg"),
+                          child: Image.asset("assets/images/defesa_civil.jpg"),
                           height: 28,
                           width: 28,
                         )
@@ -141,7 +141,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       Container(
                         child: SizedBox(
-                          child: Image.asset("assets/fb-icon.png"),
+                          child: Image.asset("assets/images/fb-icon.png"),
                           height: 28,
                           width: 28,
                         ),
@@ -180,7 +180,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       Container(
                         child: SizedBox(
-                          child: Image.asset("assets/google-icon.png"),
+                          child: Image.asset("assets/images/google-icon.png"),
                           height: 28,
                           width: 28,
                         ),
