@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/styles.dart';
+import 'package:fpa_projeto/android/views/chamado.view.dart';
 import 'package:fpa_projeto/android/views/home.view.dart';
 import 'package:fpa_projeto/android/views/splash.view.dart';
 class AndroidApp extends StatelessWidget {

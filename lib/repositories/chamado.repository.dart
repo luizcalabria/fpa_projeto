@@ -2,7 +2,7 @@ import 'package:fpa_projeto/models/chamado.model.dart';
 import 'package:fpa_projeto/settings.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-class chamadoRepository{
+class ChamadoRepository{
   Future<Database> _getDatabase() async{
     return openDatabase(
       join(await getDatabasesPath(),DATABASE_NAME),
@@ -11,6 +11,7 @@ class chamadoRepository{
         return await db.execute(CREATE_TBCHAMADO);
         return await db.execute(CREATE_TBCOMUNIDADE);
         return await db.execute(CREATE_TBUSUARIO);
+        return await db.execute(INSERT_BAIRROS);
       },
       version: 1,
     );

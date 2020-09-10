@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/views/details.view.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
+
+import 'chamado.view.dart';
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,15 @@ class HomeView extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChamadoView(
+                  ),
+                )
+          );
+        },
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(
           Icons.add,

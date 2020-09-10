@@ -13,6 +13,7 @@ class UsuarioRepository{
         return await db.execute(CREATE_TBCHAMADO);
         return await db.execute(CREATE_TBCOMUNIDADE);
         return await db.execute(CREATE_TBUSUARIO);
+        return await db.execute(INSERT_BAIRROS);
       },
       version: 1,
     );
