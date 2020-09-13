@@ -19,6 +19,9 @@ class ChamadoRepository{
 
   Future insertChamado(ChamadoModel chamado) async{
     try {
+      print(chamado.toMap());
+      chamado.processo = null;
+      chamado.dataSolicitacao = null;
       final Database db = await _getDatabase();
       await db.insert(
         TBCHAMADO,
@@ -59,7 +62,40 @@ class ChamadoRepository{
       return null;
     }
   }
-
+  Future<List<ChamadoModel>> procurarChamado(int processo) async{
+    try {
+      final Database db = await _getDatabase();
+      final List<Map<String,dynamic>> maps = await db.query(
+          TBUSUARIO,
+          where: "processo >= ?",
+          whereArgs: [
+            [processo],
+          ]
+      );
+      return List.generate(
+          maps.length,
+              (i) {
+            return ChamadoModel(
+              processo: maps[i]['processo'],
+              nomeOrigem: maps[i]['nomeOrigem'],
+              dataSolicitacao: maps[i]['dataSolicitacao'],
+              origemChamado: maps[i]['origemChamado'],
+              nomeSolicitante: maps[i]['nomeSolicitante'],
+              enderecoOcorrencia: maps[i]['enderecoOcorrencia'],
+              comunidade: maps[i]['comunidade'],
+              roteiro: maps[i]['roteiro'],
+              solicitacao: maps[i]['solicitacao'],
+              vitimas: maps[i]['vitimas'],
+              vitimasFatais: maps[i]['vitimasFatais'],
+              statusChamado: maps[i]['statusChamado'],
+            );
+          }
+      );
+    }catch(ex){
+      print(ex);
+      return null;
+    }
+  }
   Future<ChamadoModel> buscarChamado(int processo) async {
     try {
       final Database db = await _getDatabase();

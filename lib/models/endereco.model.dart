@@ -1,13 +1,15 @@
 import 'package:fpa_projeto/models/bairro.model.dart';
 
 class EnderecoModel{
-  String endereco = "";
+  String logradouro = "";
+  String numero = "";
   String complemento = "";
   BairroModel bairro;
   String cep;
 
   EnderecoModel({
-    this.endereco,
+    this.logradouro,
+    this.numero,
     this.complemento,
     this.bairro,
     this.cep,
@@ -15,7 +17,8 @@ class EnderecoModel{
 
   Map<String, dynamic> toMap(){
     return{
-      'endereco': endereco,
+      'logradouro': logradouro,
+      'numero': numero,
       'complemento': complemento,
       'bairro': bairro,
       'cep': cep,

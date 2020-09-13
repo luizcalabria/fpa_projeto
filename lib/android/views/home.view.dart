@@ -1,65 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fpa_projeto/android/views/details.view.dart';
+import 'package:fpa_projeto/android/widgets/chamado-list-item.widget.dart';
+import 'package:fpa_projeto/android/widgets/procurar-appbar.widget.dart';
+import 'package:fpa_projeto/controllers/home.controller.dart';
+import 'package:fpa_projeto/globals.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
 
 import 'chamado.view.dart';
-class HomeView extends StatelessWidget {
+
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final controller = HomeController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              color: Theme.of(context).primaryColor,
-                child: SizedBox(
-                  child: Image.asset("assets/images/defesa_civil.jpg"),
-                  height: 28,
-                  width: 28,
-                )
-            ),
-            Text(
-              "Meus Processos",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
-                fontSize: 35,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ],
+      appBar: PreferredSize(
+        child: ProcurarAppBar(
+          controller: controller,
         ),
+        preferredSize: Size.fromHeight(kToolbarHeight),
       ),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text(
-                "00000000"
-            ),
-            trailing: FlatButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-
-                    builder: (context) => DetailsView(
-                      chamado: ChamadoModel(
-                        processo: 0
-                      ),
-                    )
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.description,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          )
-        ],
+      body: Observer(
+        builder: (_)=> ListView.builder(
+            itemCount: controller.chamados.length,
+            itemBuilder: (ctx, i){
+              return ChamadoListItem(
+                chamado: controller.chamados[i],
+              );
+            }
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -67,6 +42,14 @@ class HomeView extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => ChamadoView(
+                  chamado: ChamadoModel(
+                    processo: 0,
+                    nomeSolicitante: nomeUsuario,
+                    origemChamado: "Ocorrências",
+                    nomeOrigem: "Usuário do APP",
+                    statusChamado: "Enviado para Análise",
+                    dataSolicitacao: DateTime.now()
+                  ),
                   ),
                 )
           );

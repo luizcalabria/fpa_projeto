@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fpa_projeto/android/views/home.view.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
 import 'package:fpa_projeto/repositories/chamado.repository.dart';
+import 'package:fpa_projeto/globals.dart';
+import 'package:intl/intl.dart';
+
 
 class ChamadoView extends StatefulWidget {
   final ChamadoModel chamado;
-  ChamadoView({this.chamado})
+
+
+  ChamadoView({this.chamado});
+
   @override
   _ChamadoViewState createState() => _ChamadoViewState();
 }
@@ -12,10 +19,39 @@ class ChamadoView extends StatefulWidget {
 class _ChamadoViewState extends State<ChamadoView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
-  final _repCganado = ChamadoRepository();
+  final _repChamado = ChamadoRepository();
   String dropdownValue ;
+
+  onSubmit(){
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    insert();
+  }
+
+  insert(){
+    _repChamado.insertChamado(widget.chamado).then((_) {
+      onSuccess();
+    }).catchError((_){
+      onError();
+    });
+  }
+
+  onSuccess(){
+    Navigator.pop(context);
+  }
+
+  onError(){
+    final snackBar = SnackBar(
+      content: Text("Deu Erro"),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
+    agora = DateFormat('dd/MM/yyyy – kk:mm:ss').format(DateTime.now());
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -40,55 +76,122 @@ class _ChamadoViewState extends State<ChamadoView> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(40),
+        padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              Row(
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    initialValue: "Usuáriodo APP",
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: "Origem Requerimento"
+              Container (
+                width: double.infinity,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width*0.35,
+                      child: TextFormField(
+                        initialValue: widget.chamado.nomeOrigem,
+                        decoration: InputDecoration(
+                          labelText: "Usuário de Origem"
+                        ),
+                        readOnly: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Usuário de Origem inválido';
+                          }
+                          return null;
+                        },
+                      )
                     ),
-                    onSaved: (sval){
-                      widget.chamado.nomeOrigem = sval;
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.datetime,
-                    initialValue: DateFormat('dd/-MM-YYYY – kk:mm.ss').format(DateTime.now()),
-                  )
-                ],
-              ),
-
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration (
-                labelText: "Bairro",
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width*0.42,
+                      child: TextFormField(
+                        initialValue: DateFormat('dd/MM/yyyy – kk:mm:ss').format(widget.chamado.dataSolicitacao),
+                        decoration: InputDecoration(
+                          labelText: "Data de Abertura"
+                        ),
+                        readOnly: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Data de Abertura inválida';
+                          }
+                          return null;
+                        },
+                      )
+                    ),
+                  ],
                 ),
-              value: dropdownValue,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
-                onChanged: (String newValue) {
-                  setState(() {
-                    dropdownValue = newValue;
-                  });
+              ),
+              TextFormField(
+                initialValue: widget.chamado.origemChamado,
+                decoration: InputDecoration(
+                  labelText: "Origem do Chamado"
+                ),
+                readOnly: true,
+                validator: (value){
+                  if (value.isEmpty) {
+                    return 'Data de Abertura inválida';
+                  }
+                  return null;
                 },
-                items: <String>['One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              ),
+              TextFormField(
+                initialValue: widget.chamado.nomeSolicitante,
+                decoration: InputDecoration(
+                  labelText: "Nome do Solicitante"
+                ),
+                readOnly: true,
+                validator: (value){
+                  if (value.isEmpty) {
+                    return 'Data de Abertura inválida';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Dados da Solicitação"
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Roteiro"
+                ),
+                validator: (value){
+                  if (value.isEmpty) {
+                    return 'Roteiro inválido';
+                  }
+                  return null;
+                },
+                onChanged: (val){
+                  widget.chamado.roteiro = val;
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: double.infinity,
+                height: 50,
+                child: FlatButton.icon(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: onSubmit,
+                  icon: Icon(
+                    Icons.save,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  label: Text(
+                    "Salvar",
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
