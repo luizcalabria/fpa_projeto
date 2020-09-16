@@ -3,7 +3,7 @@ import 'package:fpa_projeto/models/endereco.model.dart';
 class ChamadoModel{
   int processo;
   String nomeOrigem = "";
-  DateTime dataSolicitacao;
+  String dataSolicitacao;
   String origemChamado = "";
   String nomeSolicitante = "";
   EnderecoModel enderecoOcorrencia;

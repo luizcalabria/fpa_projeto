@@ -9,11 +9,16 @@ class UsuarioRepository{
     return openDatabase(
       join(await getDatabasesPath(),DATABASE_NAME),
       onCreate: (db,version) async{
-        return await db.execute(CREATE_TBBAIRRO);
-        return await db.execute(CREATE_TBCHAMADO);
-        return await db.execute(CREATE_TBCOMUNIDADE);
-        return await db.execute(CREATE_TBUSUARIO);
-        return await db.execute(INSERT_BAIRROS);
+        await db.execute(CREATE_TBBAIRRO);
+        await db.execute(CREATE_TBCHAMADO);
+        await db.execute(CREATE_TBCOMUNIDADE);
+        await db.execute(CREATE_TBUSUARIO);
+        await db.execute(INSERT_USUARIO);
+        await db.execute(INSERT_BAIRROS1);
+        await db.execute(INSERT_BAIRROS2);
+        await db.execute(INSERT_BAIRROS3);
+        await db.execute(INSERT_BAIRROS4);
+        return await db.execute(INSERT_BAIRROS5);
       },
       version: 1,
     );

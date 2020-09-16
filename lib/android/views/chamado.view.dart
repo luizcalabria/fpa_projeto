@@ -52,6 +52,7 @@ class _ChamadoViewState extends State<ChamadoView> {
   @override
   Widget build(BuildContext context) {
     agora = DateFormat('dd/MM/yyyy – kk:mm:ss').format(DateTime.now());
+    widget.chamado.dataSolicitacao = agora;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -107,7 +108,7 @@ class _ChamadoViewState extends State<ChamadoView> {
                     Container(
                       width: MediaQuery.of(context).size.width*0.42,
                       child: TextFormField(
-                        initialValue: DateFormat('dd/MM/yyyy – kk:mm:ss').format(widget.chamado.dataSolicitacao),
+                        initialValue: widget.chamado.dataSolicitacao,
                         decoration: InputDecoration(
                           labelText: "Data de Abertura"
                         ),

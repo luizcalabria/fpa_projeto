@@ -2,7 +2,7 @@ library fpa_projeto.globals;
 
 import 'package:intl/intl.dart';
 String agora = DateFormat('dd/MM/yyyy – kk:mm:ss').format(DateTime.now());
-final String nomeUsuario = "Fernando";
+String nomeUsuario = "Fernando";
 final List<String> bairros = ['AFLITOS',
 'AFOGADOS',
 'AGUA FRIA',

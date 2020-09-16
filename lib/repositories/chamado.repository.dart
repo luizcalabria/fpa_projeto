@@ -4,14 +4,25 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 class ChamadoRepository{
   Future<Database> _getDatabase() async{
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, DATABASE_NAME);
+
+// Delete the database
+    await deleteDatabase(path);
+
     return openDatabase(
       join(await getDatabasesPath(),DATABASE_NAME),
       onCreate: (db,version) async{
-        return await db.execute(CREATE_TBBAIRRO);
-        return await db.execute(CREATE_TBCHAMADO);
-        return await db.execute(CREATE_TBCOMUNIDADE);
-        return await db.execute(CREATE_TBUSUARIO);
-        return await db.execute(INSERT_BAIRROS);
+        await db.execute(CREATE_TBCHAMADO);
+        await db.execute(CREATE_TBBAIRRO);
+        await db.execute(CREATE_TBCOMUNIDADE);
+        await db.execute(CREATE_TBUSUARIO);
+        await db.execute(INSERT_USUARIO);
+        await db.execute(INSERT_BAIRROS1);
+        await db.execute(INSERT_BAIRROS2);
+        await db.execute(INSERT_BAIRROS3);
+        await db.execute(INSERT_BAIRROS4);
+        return await db.execute(INSERT_BAIRROS5);
       },
       version: 1,
     );
@@ -21,7 +32,6 @@ class ChamadoRepository{
     try {
       print(chamado.toMap());
       chamado.processo = null;
-      chamado.dataSolicitacao = null;
       final Database db = await _getDatabase();
       await db.insert(
         TBCHAMADO,
@@ -66,7 +76,7 @@ class ChamadoRepository{
     try {
       final Database db = await _getDatabase();
       final List<Map<String,dynamic>> maps = await db.query(
-          TBUSUARIO,
+          TBCHAMADO,
           where: "processo >= ?",
           whereArgs: [
             [processo],

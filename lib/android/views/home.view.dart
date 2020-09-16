@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:fpa_projeto/android/views/details.view.dart';
 import 'package:fpa_projeto/android/widgets/chamado-list-item.widget.dart';
 import 'package:fpa_projeto/android/widgets/procurar-appbar.widget.dart';
 import 'package:fpa_projeto/controllers/home.controller.dart';
 import 'package:fpa_projeto/globals.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
+import 'package:fpa_projeto/models/usuario.model.dart';
+import 'package:fpa_projeto/repositories/usuario.repository.dart';
 
 import 'chamado.view.dart';
 
@@ -16,9 +17,16 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final controller = HomeController();
+  final repUsuario = UsuarioRepository();
 
+  buscaUsuario(){
+    List<UsuarioModel>usuario = repUsuario.buscarUsuarios(0) as List<UsuarioModel>;
+    nomeUsuario = usuario[0].nome;
+
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: PreferredSize(
         child: ProcurarAppBar(
@@ -48,7 +56,6 @@ class _HomeViewState extends State<HomeView> {
                     origemChamado: "Ocorrências",
                     nomeOrigem: "Usuário do APP",
                     statusChamado: "Enviado para Análise",
-                    dataSolicitacao: DateTime.now()
                   ),
                   ),
                 )
