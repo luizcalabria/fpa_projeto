@@ -4,11 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 class ChamadoRepository{
   Future<Database> _getDatabase() async{
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, DATABASE_NAME);
-
-// Delete the database
-    await deleteDatabase(path);
 
     return openDatabase(
       join(await getDatabasesPath(),DATABASE_NAME),
@@ -78,9 +73,7 @@ class ChamadoRepository{
       final List<Map<String,dynamic>> maps = await db.query(
           TBCHAMADO,
           where: "processo >= ?",
-          whereArgs: [
-            [processo],
-          ]
+          whereArgs: [processo]
       );
       return List.generate(
           maps.length,

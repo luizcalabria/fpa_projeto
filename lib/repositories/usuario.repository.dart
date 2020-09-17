@@ -60,27 +60,20 @@ class UsuarioRepository{
     }
   }
 
-  Future<List<UsuarioModel>> buscarUsuarios(int id) async {
+  Future<UsuarioModel> buscarUsuarios(int id) async {
     try {
       final Database db = await _getDatabase();
       final List<Map<String,dynamic>> maps = await db.query(
         TBUSUARIO,
-        where: "id = ?",
-        whereArgs: [
-          id,
-        ]
+        where: "$id = ?",
+        whereArgs: [id]
       );
-      return List.generate(
-          maps.length,
-              (i) {
-            return UsuarioModel(
-                id: maps[i]["id"],
-                cpf: maps[i]["cpf"],
-                email: maps[i]["email"],
-                nome: maps[i]["nome"],
-                senha: maps[i]["senha"]
-            );
-          }
+      return UsuarioModel(
+        id: maps[0]["id"],
+        cpf: maps[0]["cpf"],
+        email: maps[0]["email"],
+        nome: maps[0]["nome"],
+        senha: maps[0]["senha"]
       );
     }catch(ex){
       print(ex);

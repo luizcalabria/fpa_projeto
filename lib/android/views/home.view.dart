@@ -17,13 +17,14 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final controller = HomeController();
-  final repUsuario = UsuarioRepository();
 
-  buscaUsuario(){
-    List<UsuarioModel>usuario = repUsuario.buscarUsuarios(0) as List<UsuarioModel>;
-    nomeUsuario = usuario[0].nome;
-
+  @override
+  void initState(){
+    super.initState();
+    controller.carregaUsuario();
+    controller.search(0);
   }
+
   @override
   Widget build(BuildContext context) {
 
