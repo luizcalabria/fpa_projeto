@@ -20,9 +20,7 @@ class ChamadoListItem extends StatelessWidget {
             MaterialPageRoute(
 
                 builder: (context) => DetailsView(
-                  chamado: ChamadoModel(
-                      processo: chamado.processo
-                  ),
+                  id: chamado.processo,
                 )
             ),
           );

@@ -5,11 +5,8 @@ import 'package:fpa_projeto/repositories/chamado.repository.dart';
 import 'package:fpa_projeto/globals.dart';
 import 'package:intl/intl.dart';
 
-
 class ChamadoView extends StatefulWidget {
   final ChamadoModel chamado;
-
-
   ChamadoView({this.chamado});
 
   @override
@@ -39,7 +36,12 @@ class _ChamadoViewState extends State<ChamadoView> {
   }
 
   onSuccess(){
-    Navigator.pop(context);
+    var push = Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeView(),
+      ),
+    );
   }
 
   onError(){

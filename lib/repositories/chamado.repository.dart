@@ -103,11 +103,9 @@ class ChamadoRepository{
     try {
       final Database db = await _getDatabase();
       final List<Map<String,dynamic>> maps = await db.query(
-          TBUSUARIO,
+          TBCHAMADO,
           where: "processo = ?",
-          whereArgs: [
-            [processo],
-          ]
+          whereArgs: [processo]
       );
         return ChamadoModel(
           processo: maps[0]['processo'],
