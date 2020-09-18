@@ -1,6 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:fpa_projeto/android/views/home.view.dart';
+import 'package:fpa_projeto/controllers/auth.controller.dart';
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
+  @override
+  _SplashViewState createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  final controller = new AuthController();
+
+  @override
+  void initState(){
+    super.initState();
+    controller.authenticate().then((resultado){
+      if(resultado == 0) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeView(),
+          )
+        );
+      } else {
+        if (resultado == 2){
+          //TODO: Tela de Login
+        }else{
+          //TODO: Mensagem de sem acesso
+        }
+      }
+    }).catchError((erro){
+      print(erro);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
