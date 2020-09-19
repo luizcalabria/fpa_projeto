@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 
 class ChamadoView extends StatefulWidget {
   final ChamadoModel chamado;
-  ChamadoView({this.chamado});
+  ChamadoView({
+    this.chamado,
+  });
 
   @override
   _ChamadoViewState createState() => _ChamadoViewState();
@@ -36,7 +38,7 @@ class _ChamadoViewState extends State<ChamadoView> {
   }
 
   onSuccess(){
-    var push = Navigator.push(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => HomeView(),
@@ -108,7 +110,7 @@ class _ChamadoViewState extends State<ChamadoView> {
                       width: 5,
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width*0.42,
+                      width: MediaQuery.of(context).size.width*0.45,
                       child: TextFormField(
                         initialValue: widget.chamado.dataSolicitacao,
                         decoration: InputDecoration(
@@ -158,9 +160,6 @@ class _ChamadoViewState extends State<ChamadoView> {
               Text(
                 "Dados da Solicitação"
               ),
-              SizedBox(
-                height: 5,
-              ),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Roteiro"
@@ -173,6 +172,42 @@ class _ChamadoViewState extends State<ChamadoView> {
                 },
                 onChanged: (val){
                   widget.chamado.roteiro = val;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Logradouro"
+                ),
+                validator: (value){
+                  if (value.isEmpty){
+                    return "Logradouro inválido";
+                  }
+                  return null;
+                },
+                onChanged: (val){
+                  widget.chamado.logradouro = val;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Número"
+                ),
+                validator: (value){
+                  if (value.isEmpty){
+                    return "Número inválido";
+                  }
+                  return null;
+                },
+                onChanged: (val){
+                  widget.chamado.numero = val;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Complemento"
+                ),
+                onChanged: (val){
+                  widget.chamado.complemento = val;
                 },
               ),
               SizedBox(

@@ -1,20 +1,22 @@
 import 'package:fpa_projeto/models/comunidade.model.dart';
-import 'package:fpa_projeto/models/endereco.model.dart';
 class ChamadoModel{
   int processo;
   String nomeOrigem = "";
   String dataSolicitacao;
   String origemChamado = "";
   String nomeSolicitante = "";
-  EnderecoModel enderecoOcorrencia;
+  String logradouro = "";
+  String numero = "";
+  String complemento = "";
+  int bairro = 0;
   ComunidadeModel comunidade;
-  String roteiro;
-  String solicitacao;
-  bool vitimas;
-  bool vitimasFatais;
-  String statusChamado;
-  double latitude;
-  double longitude;
+  String roteiro = "";
+  String solicitacao = "";
+  bool vitimas = false;
+  bool vitimasFatais = false;
+  String statusChamado = "";
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   ChamadoModel({
     this.processo,
@@ -22,7 +24,10 @@ class ChamadoModel{
     this.dataSolicitacao,
     this.origemChamado,
     this.nomeSolicitante,
-    this.enderecoOcorrencia,
+    this.logradouro,
+    this.numero,
+    this.complemento,
+    this.bairro,
     this.comunidade,
     this.roteiro,
     this.solicitacao,
@@ -40,7 +45,10 @@ class ChamadoModel{
       'dataSolicitacao': dataSolicitacao,
       'origemChamado': origemChamado,
       'nomeSolicitante': nomeSolicitante,
-      'enderecoOcorrencia': enderecoOcorrencia,
+      'logradouro': logradouro,
+      'numero': numero,
+      'complemento': complemento,
+      'bairro': bairro,
       'comunidade': comunidade,
       'roteiro': roteiro,
       'solicitacao': solicitacao,
@@ -48,7 +56,7 @@ class ChamadoModel{
       'vitimasFatais': vitimasFatais,
       'statusChamado': statusChamado,
       'latitude': latitude,
-      'logitude': longitude
+      'longitude': longitude
     };
   }
   Map<dynamic, String> fromMap() {
@@ -58,7 +66,10 @@ class ChamadoModel{
       dataSolicitacao: 'dataSolicitacao',
       origemChamado: 'origemChamado',
       nomeSolicitante: 'nomeSolicitante',
-      enderecoOcorrencia: 'enderecoOcorrencia',
+      logradouro: 'logradouro',
+      numero: 'numero',
+      complemento: 'complemento',
+      bairro: 'bairro',
       comunidade: 'comunidade',
       roteiro: 'roteiro',
       solicitacao: 'solicitacao',

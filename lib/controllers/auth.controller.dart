@@ -46,7 +46,6 @@ class AuthController {
        return 1;
       }
     }else{
-      print("Tela de Login");
       return 2;
     }
   }

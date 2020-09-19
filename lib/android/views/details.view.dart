@@ -34,7 +34,6 @@ class _DetailsViewState extends State<DetailsView> {
     );
   }
   Widget page(BuildContext context,ChamadoModel chamado) {
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

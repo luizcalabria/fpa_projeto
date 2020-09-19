@@ -46,6 +46,14 @@ mixin _$HomeController on _HomeController, Store {
     return _$searchAsyncAction.run(() => super.search(processo));
   }
 
+  final _$carregaUsuarioAsyncAction =
+      AsyncAction('_HomeController.carregaUsuario');
+
+  @override
+  Future carregaUsuario() {
+    return _$carregaUsuarioAsyncAction.run(() => super.carregaUsuario());
+  }
+
   final _$_HomeControllerActionController =
       ActionController(name: '_HomeController');
 
