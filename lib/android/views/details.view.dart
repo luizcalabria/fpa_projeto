@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/views/loading.view.dart';
+import 'package:fpa_projeto/android/views/mapa.view.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
 import 'package:fpa_projeto/repositories/chamado.repository.dart';
 class DetailsView extends StatefulWidget {
@@ -153,6 +154,21 @@ class _DetailsViewState extends State<DetailsView> {
               ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapaView()
+              )
+          );
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(
+          Icons.map,
+          color: Theme.of(context).accentColor,
         ),
       ),
     );

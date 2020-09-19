@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/styles.dart';
+import 'package:fpa_projeto/android/views/home.view.dart';
+import 'package:fpa_projeto/android/views/mapa.view.dart';
 import 'package:fpa_projeto/android/views/splash.view.dart';
 class AndroidApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -9,7 +11,7 @@ class AndroidApp extends StatelessWidget {
       title: 'Defesa Civil do Recife',
       debugShowCheckedModeBanner: false,
       theme: androidTheme(),
-      home: SplashView()
+      home: HomeView()
     );
   }
 }

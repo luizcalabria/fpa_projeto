@@ -50,16 +50,16 @@ class _HomeViewState extends State<HomeView> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChamadoView(
-                  chamado: ChamadoModel(
-                    processo: 0,
-                    nomeSolicitante: nomeUsuario,
-                    origemChamado: "Ocorrências",
-                    nomeOrigem: "Usuário do APP",
-                    statusChamado: "Enviado para Análise",
-                  ),
-                  ),
-                )
+              builder: (context) => ChamadoView(
+                chamado: ChamadoModel(
+                  processo: 0,
+                  nomeSolicitante: nomeUsuario,
+                  origemChamado: "Ocorrências",
+                  nomeOrigem: "Usuário do APP",
+                  statusChamado: "Enviado para Análise",
+                ),
+              ),
+            )
           );
         },
         backgroundColor: Theme.of(context).primaryColor,

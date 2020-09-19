@@ -13,6 +13,8 @@ class ChamadoModel{
   bool vitimas;
   bool vitimasFatais;
   String statusChamado;
+  double latitude;
+  double longitude;
 
   ChamadoModel({
     this.processo,
@@ -26,7 +28,9 @@ class ChamadoModel{
     this.solicitacao,
     this.vitimas,
     this.vitimasFatais,
-    this.statusChamado
+    this.statusChamado,
+    this.latitude,
+    this.longitude
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +47,8 @@ class ChamadoModel{
       'vitimas': vitimas,
       'vitimasFatais': vitimasFatais,
       'statusChamado': statusChamado,
+      'latitude': latitude,
+      'logitude': longitude
     };
   }
   Map<dynamic, String> fromMap() {
@@ -59,6 +65,8 @@ class ChamadoModel{
       vitimas: 'vitimas',
       vitimasFatais: 'vitimasFatais',
       statusChamado: 'statusChamado',
+      latitude: 'latitude',
+      longitude: 'longitude'
     };
   }
 }
