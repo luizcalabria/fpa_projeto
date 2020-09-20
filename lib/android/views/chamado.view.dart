@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/views/home.view.dart';
+import 'package:fpa_projeto/models/bairro.model.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
+import 'package:fpa_projeto/repositories/bairro.repository.dart';
 import 'package:fpa_projeto/repositories/chamado.repository.dart';
 import 'package:fpa_projeto/globals.dart';
 import 'package:intl/intl.dart';
 
 class ChamadoView extends StatefulWidget {
   final ChamadoModel chamado;
+  BairroModel bairro;
   ChamadoView({
     this.chamado,
+    this.bairro
   });
 
   @override
@@ -19,7 +23,11 @@ class _ChamadoViewState extends State<ChamadoView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
   final _repChamado = ChamadoRepository();
+  final _repBairro = BairroRepository();
   String dropdownValue ;
+  TextEditingController _controllerRpa = TextEditingController(text: "");
+  TextEditingController _controllerMr = TextEditingController(text: "");
+  TextEditingController _controllerRegional = TextEditingController(text: "");
 
   onSubmit(){
     if (!_formKey.currentState.validate()) {
@@ -56,6 +64,7 @@ class _ChamadoViewState extends State<ChamadoView> {
   @override
   Widget build(BuildContext context) {
     agora = DateFormat('dd/MM/yyyy – kk:mm:ss').format(DateTime.now());
+    widget.bairro = new BairroModel();
     widget.chamado.dataSolicitacao = agora;
     return Scaffold(
       key: _scaffoldKey,
@@ -90,41 +99,33 @@ class _ChamadoViewState extends State<ChamadoView> {
                 width: double.infinity,
                 child: Row(
                   children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.35,
+                    Flexible(
                       child: TextFormField(
                         initialValue: widget.chamado.nomeOrigem,
                         decoration: InputDecoration(
-                          labelText: "Usuário de Origem"
+                            labelText: "Usuário de Origem",
                         ),
                         readOnly: true,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Usuário de Origem inválido';
-                          }
-                          return null;
-                        },
-                      )
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
                     ),
                     SizedBox(
-                      width: 5,
+                      width: 2,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.45,
+                    Flexible(
                       child: TextFormField(
                         initialValue: widget.chamado.dataSolicitacao,
                         decoration: InputDecoration(
-                          labelText: "Data de Abertura"
+                            labelText: "Data de Abertura"
                         ),
                         readOnly: true,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Data de Abertura inválida';
-                          }
-                          return null;
-                        },
-                      )
-                    ),
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -134,12 +135,6 @@ class _ChamadoViewState extends State<ChamadoView> {
                   labelText: "Origem do Chamado"
                 ),
                 readOnly: true,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Data de Abertura inválida';
-                  }
-                  return null;
-                },
               ),
               TextFormField(
                 initialValue: widget.chamado.nomeSolicitante,
@@ -147,12 +142,6 @@ class _ChamadoViewState extends State<ChamadoView> {
                   labelText: "Nome do Solicitante"
                 ),
                 readOnly: true,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Data de Abertura inválida';
-                  }
-                  return null;
-                },
               ),
               SizedBox(
                 height: 5,
@@ -209,6 +198,86 @@ class _ChamadoViewState extends State<ChamadoView> {
                 onChanged: (val){
                   widget.chamado.complemento = val;
                 },
+              ),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration (
+                  labelText: "Bairro",
+                ),
+                validator: (value) => value == null ? 'Bairro inválido' : null,
+                value: dropdownValue,
+                icon: Icon(
+                    Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                onChanged: (val) {
+                  String nomeBairro  = val;
+                  var ba = BairroModel();
+                  _repBairro.buscarChamado(nomeBairro).then((value){
+                    widget.chamado.bairro = value.codigoBairro;
+                    ba.rpa = value.rpa;
+                    setState(() {
+                      _controllerRpa.text = value.rpa.toString();
+                      _controllerMr.text = value.mr;
+                      _controllerRegional.text = value.regional;
+                    });
+                  }).catchError((erro){
+                    print(erro);
+                  });
+                },
+                items: bairros
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: TextFormField(
+                      controller: _controllerRpa,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: "RPA"
+                      ),
+                      style: TextStyle(
+                        fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      controller: _controllerMr,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Micro"
+                      ),
+                      style: TextStyle(
+                          fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      controller: _controllerRegional,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Regional"
+                      ),
+                      style: TextStyle(
+                          fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 20,

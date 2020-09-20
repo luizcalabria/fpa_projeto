@@ -22,4 +22,13 @@ class BairroModel{
       'regional': regional,
     };
   }
+  Map<dynamic, String> fromMap(Map<String, dynamic> map){
+    return {
+      codigoBairro: 'codigoBairro',
+      nomeBairro: 'nomeBairro',
+      rpa: 'rpa',
+      mr: 'mr',
+      regional: 'regional'
+    };
+  }
 }
