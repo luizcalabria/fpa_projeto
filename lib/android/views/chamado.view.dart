@@ -151,7 +151,7 @@ class _ChamadoViewState extends State<ChamadoView> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Roteiro"
+                  labelText: "Roteiro de Acesso"
                 ),
                 validator: (value){
                   if (value.isEmpty) {
@@ -177,27 +177,38 @@ class _ChamadoViewState extends State<ChamadoView> {
                   widget.chamado.logradouro = val;
                 },
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Número"
-                ),
-                validator: (value){
-                  if (value.isEmpty){
-                    return "Número inválido";
-                  }
-                  return null;
-                },
-                onChanged: (val){
-                  widget.chamado.numero = val;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Complemento"
-                ),
-                onChanged: (val){
-                  widget.chamado.complemento = val;
-                },
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          labelText: "Número"
+                      ),
+                      validator: (value){
+                        if (value.isEmpty){
+                          return "Número inválido";
+                        }
+                        return null;
+                      },
+                      onChanged: (val){
+                        widget.chamado.numero = val;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          labelText: "Complemento"
+                      ),
+                      onChanged: (val){
+                        widget.chamado.complemento = val;
+                      },
+                    ),
+                  )
+                ],
               ),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration (
@@ -213,7 +224,7 @@ class _ChamadoViewState extends State<ChamadoView> {
                 onChanged: (val) {
                   String nomeBairro  = val;
                   var ba = BairroModel();
-                  _repBairro.buscarChamado(nomeBairro).then((value){
+                  _repBairro.buscarBairro(nomeBairro).then((value){
                     widget.chamado.bairro = value.codigoBairro;
                     ba.rpa = value.rpa;
                     setState(() {
@@ -234,7 +245,7 @@ class _ChamadoViewState extends State<ChamadoView> {
                 }).toList(),
               ),
               Row(
-                children: [
+                children: <Widget>[
                   Flexible(
                     child: TextFormField(
                       controller: _controllerRpa,
@@ -279,8 +290,21 @@ class _ChamadoViewState extends State<ChamadoView> {
                   ),
                 ],
               ),
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: "Solicitação"
+                ),
+                onChanged: (val){
+                  widget.chamado.solicitacao=val;
+                },
+              ),
+              Row(
+                children: <Widget>[
+
+                ],
+              ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Container(
                 width: double.infinity,

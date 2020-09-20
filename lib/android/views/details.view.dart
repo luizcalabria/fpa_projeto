@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/android/views/loading.view.dart';
-import 'package:fpa_projeto/android/views/mapa.view.dart';
+import 'package:fpa_projeto/models/bairro.model.dart';
 import 'package:fpa_projeto/models/chamado.model.dart';
+import 'package:fpa_projeto/models/detalheCompleto.model.dart';
+import 'package:fpa_projeto/repositories/bairro.repository.dart';
 import 'package:fpa_projeto/repositories/chamado.repository.dart';
 class DetailsView extends StatefulWidget {
   final int id;
@@ -14,26 +16,67 @@ class DetailsView extends StatefulWidget {
 
 class _DetailsViewState extends State<DetailsView> {
   final repChamado = new ChamadoRepository();
+  final repBairro = new BairroRepository();
 
-  BuscarChamado(int processo) async{
-    ChamadoModel chamado = await repChamado.buscarChamado(processo) as ChamadoModel;
-    return chamado;
+  buscarChamado(int processo) async{
+    DetalheCompletoModel dc = new DetalheCompletoModel();
+    await repChamado.buscarChamado(processo).then((ChamadoModel chamado) {
+      dc.processo = chamado.processo;
+      dc.nomeOrigem = chamado.nomeOrigem;
+      dc.dataSolicitacao = chamado.dataSolicitacao;
+      dc.origemChamado = chamado.origemChamado;
+      dc.nomeSolicitante = chamado.nomeSolicitante;
+      dc.logradouro = chamado.logradouro;
+      dc.numero = chamado.numero;
+      dc.complemento = chamado.complemento;
+      dc.codigoBairro = chamado.bairro;
+      dc.roteiro = chamado.roteiro;
+      dc.solicitacao = chamado.solicitacao;
+      dc.vitimas = chamado.vitimas;
+      dc.vitimasFatais = chamado.vitimasFatais;
+      dc.statusChamado = chamado.statusChamado;
+      dc.latitude = chamado.latitude;
+      dc.longitude = chamado.longitude;
+    }).catchError((erro){
+      print(erro);
+    });
+    await repBairro.buscarPorCodigo(dc.codigoBairro).then((BairroModel bairros){
+      dc.nomeBairro = bairros.nomeBairro;
+      dc.rpa = bairros.rpa;
+      dc.mr = bairros.mr;
+      dc.regional = bairros.regional;
+      return dc;
+    });
+    return dc;
   }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: repChamado.buscarChamado(widget.id),
+      future: buscarChamado(widget.id),
+
       builder: (ctx, snp) {
         if (snp.hasData) {
-          ChamadoModel contact = snp.data;
-          return page(context, contact);
+          DetalheCompletoModel chamado = snp.data;
+          String v;
+          String vf;
+          if (chamado.vitimas == null){
+            v = "Não";
+          } else{
+            v = "Sim";
+          }
+          if (chamado.vitimasFatais == null){
+            vf = "Não";
+          } else{
+            vf = "Sim";
+          }
+          return page(context, chamado, v, vf);
         } else {
           return LoadingView();
         }
       },
     );
   }
-  Widget page(BuildContext context,ChamadoModel chamado) {
+  Widget page(BuildContext context,DetalheCompletoModel chamado, String v, String vf) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -50,7 +93,7 @@ class _DetailsViewState extends State<DetailsView> {
                 width: 10,
               ),
               Text(
-                  "Situação do Chamado"
+                  "Abertura de Chamado"
               ),
             ],
           ),
@@ -65,41 +108,33 @@ class _DetailsViewState extends State<DetailsView> {
                 width: double.infinity,
                 child: Row(
                   children: <Widget>[
-                    Container(
-                        width: MediaQuery.of(context).size.width*0.35,
-                        child: TextFormField(
-                          initialValue: chamado.nomeOrigem,
-                          decoration: InputDecoration(
-                              labelText: "Usuário de Origem"
-                          ),
-                          readOnly: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Usuário de Origem inválido';
-                            }
-                            return null;
-                          },
-                        )
+                    Flexible(
+                      child: TextFormField(
+                        initialValue: chamado.nomeOrigem,
+                        decoration: InputDecoration(
+                          labelText: "Usuário de Origem",
+                        ),
+                        readOnly: true,
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
                     ),
                     SizedBox(
-                      width: 5,
+                      width: 2,
                     ),
-                    Container(
-                        width: MediaQuery.of(context).size.width*0.42,
-                        child: TextFormField(
-                          initialValue: chamado.dataSolicitacao,
-                          decoration: InputDecoration(
-                              labelText: "Data de Abertura"
-                          ),
-                          readOnly: true,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Data de Abertura inválida';
-                            }
-                            return null;
-                          },
-                        )
-                    ),
+                    Flexible(
+                      child: TextFormField(
+                        initialValue: chamado.dataSolicitacao,
+                        decoration: InputDecoration(
+                            labelText: "Data de Abertura"
+                        ),
+                        readOnly: true,
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -109,12 +144,6 @@ class _DetailsViewState extends State<DetailsView> {
                     labelText: "Origem do Chamado"
                 ),
                 readOnly: true,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Data de Abertura inválida';
-                  }
-                  return null;
-                },
               ),
               TextFormField(
                 initialValue: chamado.nomeSolicitante,
@@ -122,12 +151,6 @@ class _DetailsViewState extends State<DetailsView> {
                     labelText: "Nome do Solicitante"
                 ),
                 readOnly: true,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Data de Abertura inválida';
-                  }
-                  return null;
-                },
               ),
               SizedBox(
                 height: 5,
@@ -135,39 +158,137 @@ class _DetailsViewState extends State<DetailsView> {
               Text(
                   "Dados da Solicitação"
               ),
-              SizedBox(
-                height: 5,
-              ),
               TextFormField(
-                initialValue: chamado.roteiro,
                 readOnly: true,
                 decoration: InputDecoration(
-                    labelText: "Roteiro"
+                    labelText: "Roteiro de Acesso"
                 ),
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Roteiro inválido';
-                  }
-                  return null;
-                },
+                initialValue: chamado.roteiro,
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    labelText: "Logradouro"
+                ),
+                initialValue: chamado.logradouro,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Número"
+                      ),
+                      initialValue: chamado.numero,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Complemento"
+                      ),
+                      initialValue: chamado.complemento,
+                    ),
+                  )
+                ],
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "Bairro"
+                ),
+                initialValue: chamado.nomeBairro,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "RPA"
+                      ),
+                      initialValue: chamado.rpa.toString(),
+                      style: TextStyle(
+                          fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Micro"
+                      ),
+                      initialValue: chamado.mr,
+                      style: TextStyle(
+                          fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Regional"
+                      ),
+                      initialValue: chamado.regional,
+                      style: TextStyle(
+                          fontSize: 15.0
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: "Solicitação"
+                ),
+                initialValue: chamado.solicitacao,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: "Vítimas"
+                      ),
+                      initialValue: v,
+                      style: TextStyle(
+                          fontSize: 15
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Flexible(
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          labelText: "Vítimas Fatais"
+                      ),
+                      initialValue: vf,
+                      style: TextStyle(
+                          fontSize: 15
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MapaView()
-              )
-          );
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(
-          Icons.map,
-          color: Theme.of(context).accentColor,
         ),
       ),
     );

@@ -44,13 +44,34 @@ class BairroRepository{
     }
   }
 
-  Future<BairroModel> buscarChamado(String nomeBairro) async {
+  Future<BairroModel> buscarBairro(String nomeBairro) async {
     try {
       final Database db = await _getDatabase();
       final List<Map<String,dynamic>> maps = await db.query(
           TBBAIRRO,
           where: "nomeBairro = ?",
           whereArgs: [nomeBairro]
+      );
+      return BairroModel(
+        codigoBairro: maps[0]['codigoBairro'],
+        nomeBairro: maps[0]['nomeBairro'],
+        rpa: maps[0]['rpa'],
+        mr: maps[0]['mr'],
+        regional: maps[0]['regional'],
+      );
+    }catch(ex){
+      print(ex);
+      return null;
+    }
+  }
+
+  Future<BairroModel> buscarPorCodigo(int codigoBairro) async {
+    try {
+      final Database db = await _getDatabase();
+      final List<Map<String,dynamic>> maps = await db.query(
+          TBBAIRRO,
+          where: "codigoBairro = ?",
+          whereArgs: [codigoBairro]
       );
       return BairroModel(
         codigoBairro: maps[0]['codigoBairro'],
