@@ -26,6 +26,7 @@ class ChamadoRepository{
   }
 
   Future<dynamic> getLatLng (endereco) async{
+    print (url + endereco);
     Response response = await Dio().get(url + endereco);
     double lat = response.data["results"][0]["geometry"]["location"]["lat"];
     double lng = response.data["results"][0]["geometry"]["location"]["lng"];
@@ -45,7 +46,6 @@ class ChamadoRepository{
       }).catchError((err){
         print(err);
       });
-      print(chamado.toMap());
       chamado.processo = null;
       final Database db = await _getDatabase();
       await db.insert(

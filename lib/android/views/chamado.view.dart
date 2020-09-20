@@ -28,6 +28,8 @@ class _ChamadoViewState extends State<ChamadoView> {
   TextEditingController _controllerRpa = TextEditingController(text: "");
   TextEditingController _controllerMr = TextEditingController(text: "");
   TextEditingController _controllerRegional = TextEditingController(text: "");
+  var isSelectedVitima = false;
+  var isSelectedVitimaFatal = false;
 
   onSubmit(){
     if (!_formKey.currentState.validate()) {
@@ -66,6 +68,7 @@ class _ChamadoViewState extends State<ChamadoView> {
     agora = DateFormat('dd/MM/yyyy – kk:mm:ss').format(DateTime.now());
     widget.bairro = new BairroModel();
     widget.chamado.dataSolicitacao = agora;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -300,7 +303,35 @@ class _ChamadoViewState extends State<ChamadoView> {
               ),
               Row(
                 children: <Widget>[
-
+                  Flexible(
+                    child: CheckboxListTile(
+                      value: isSelectedVitima,
+                      title: Text("Vítimas"),
+                      checkColor: Theme.of(context).primaryColor,
+                      onChanged: (bool b){
+                        setState(() {
+                          isSelectedVitima = b;
+                          widget.chamado.vitimas = b ? 0 : 1;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Flexible(
+                    child: CheckboxListTile(
+                      value: isSelectedVitimaFatal,
+                      title: Text("Vítimas Fatais"),
+                      checkColor: Theme.of(context).primaryColor,
+                      onChanged: (bool b){
+                        setState(() {
+                          isSelectedVitimaFatal = b;
+                          widget.chamado.vitimasFatais = b ? 0 : 1;
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
               SizedBox(

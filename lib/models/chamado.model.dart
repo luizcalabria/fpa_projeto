@@ -12,8 +12,8 @@ class ChamadoModel{
   ComunidadeModel comunidade;
   String roteiro = "";
   String solicitacao = "";
-  bool vitimas = false;
-  bool vitimasFatais = false;
+  int vitimas = 0;
+  int vitimasFatais = 0;
   String statusChamado = "";
   double latitude = 0.0;
   double longitude = 0.0;

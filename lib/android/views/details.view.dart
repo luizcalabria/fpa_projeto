@@ -59,12 +59,12 @@ class _DetailsViewState extends State<DetailsView> {
           DetalheCompletoModel chamado = snp.data;
           String v;
           String vf;
-          if (chamado.vitimas == null){
+          if (chamado.vitimas == 0){
             v = "Não";
           } else{
             v = "Sim";
           }
-          if (chamado.vitimasFatais == null){
+          if (chamado.vitimasFatais == 0){
             vf = "Não";
           } else{
             vf = "Sim";
