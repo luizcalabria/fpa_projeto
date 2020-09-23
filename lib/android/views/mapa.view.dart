@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fpa_projeto/globals.dart';
+import 'package:fpa_projeto/repositories/chamado.repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -17,7 +18,6 @@ class _MapaViewState extends State<MapaView> {
 
   setMapPosition(title, snippet) {
     mapController.animateCamera(CameraUpdate.newLatLng(_center));
-    markers = Set<Marker>();
 
     final uuid = Uuid();
     Marker marker = Marker(
@@ -30,6 +30,9 @@ class _MapaViewState extends State<MapaView> {
     );
 
     markers.add(marker);
+    markers.forEach((element) {
+      print (element.position);
+    });
     setState(() {});
   }
 
@@ -46,8 +49,24 @@ class _MapaViewState extends State<MapaView> {
     setMapPosition(nomeUsuario, "Posição Atual");
   }
 
+  setLocation(title,snippet,lat,lng) async {
+    _center = LatLng(lat,lng,);
+    setMapPosition(title, snippet);
+  }
+  marcaChamados(){
+    ChamadoRepository repChamados = new ChamadoRepository();
+    repChamados.listarChamados().then((chamados) {
+      chamados.forEach((chamado) {
+        if (!chamado.latitude.isNaN){
+          setLocation(chamado.processo.toString(), chamado.statusChamado, chamado.latitude, chamado.longitude);
+        }
+      });
+    });
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    marcaChamados();
     setCurrentLocation();
   }
 

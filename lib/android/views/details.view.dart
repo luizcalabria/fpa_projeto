@@ -5,6 +5,8 @@ import 'package:fpa_projeto/models/chamado.model.dart';
 import 'package:fpa_projeto/models/detalheCompleto.model.dart';
 import 'package:fpa_projeto/repositories/bairro.repository.dart';
 import 'package:fpa_projeto/repositories/chamado.repository.dart';
+
+import 'mapa.view.dart';
 class DetailsView extends StatefulWidget {
   final int id;
 
@@ -290,6 +292,21 @@ class _DetailsViewState extends State<DetailsView> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapaView(),
+              ),
+            );
+          },
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Icon(
+            Icons.map,
+            color: Theme.of(context).accentColor,
+          )
       ),
     );
   }
