@@ -11,7 +11,6 @@ class BairroRepository{
         await db.execute(CREATE_TBBAIRRO);
         await db.execute(CREATE_TBCOMUNIDADE);
         await db.execute(CREATE_TBUSUARIO);
-        await db.execute(INSERT_USUARIO);
         await db.execute(INSERT_BAIRROS1);
         await db.execute(INSERT_BAIRROS2);
         await db.execute(INSERT_BAIRROS3);

@@ -39,6 +39,7 @@ class _DetailsViewState extends State<DetailsView> {
       dc.statusChamado = chamado.statusChamado;
       dc.latitude = chamado.latitude;
       dc.longitude = chamado.longitude;
+      print (chamado.toMap());
     }).catchError((erro){
       print(erro);
     });

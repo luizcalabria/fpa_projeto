@@ -17,6 +17,8 @@ class ChamadoModel{
   String statusChamado = "";
   double latitude = 0.0;
   double longitude = 0.0;
+  String cpf = "";
+  int ulat = 0;
 
   ChamadoModel({
     this.processo,
@@ -35,7 +37,9 @@ class ChamadoModel{
     this.vitimasFatais,
     this.statusChamado,
     this.latitude,
-    this.longitude
+    this.longitude,
+    this.cpf,
+    this.ulat
   });
 
   Map<String, dynamic> toMap() {
@@ -56,7 +60,9 @@ class ChamadoModel{
       'vitimasFatais': vitimasFatais,
       'statusChamado': statusChamado,
       'latitude': latitude,
-      'longitude': longitude
+      'longitude': longitude,
+      'cpf': cpf,
+      'ulat': ulat
     };
   }
   Map<dynamic, String> fromMap() {
@@ -77,7 +83,9 @@ class ChamadoModel{
       vitimasFatais: 'vitimasFatais',
       statusChamado: 'statusChamado',
       latitude: 'latitude',
-      longitude: 'longitude'
+      longitude: 'longitude',
+      cpf: 'cpf',
+      ulat: 'ulat'
     };
   }
 }

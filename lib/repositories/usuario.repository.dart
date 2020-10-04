@@ -13,7 +13,6 @@ class UsuarioRepository{
         await db.execute(CREATE_TBCHAMADO);
         await db.execute(CREATE_TBCOMUNIDADE);
         await db.execute(CREATE_TBUSUARIO);
-        await db.execute(INSERT_USUARIO);
         await db.execute(INSERT_BAIRROS1);
         await db.execute(INSERT_BAIRROS2);
         await db.execute(INSERT_BAIRROS3);
@@ -58,6 +57,14 @@ class UsuarioRepository{
       print(ex);
       return null;
     }
+  }
+
+  Future<int> getCount() async {
+    //database connection
+    final Database db = await _getDatabase();
+    var x = await db.rawQuery('SELECT COUNT (*) from ' + TBUSUARIO);
+        int count = Sqflite.firstIntValue(x);
+    return count;
   }
 
   Future<UsuarioModel> buscarUsuarios(int id) async {

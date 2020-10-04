@@ -10,19 +10,27 @@ class MapaView extends StatefulWidget {
 }
 
 class _MapaViewState extends State<MapaView> {
-
-
+  BitmapDescriptor pinBlueIcon;
+  BitmapDescriptor pinGreenIcon;
+  BitmapDescriptor pinYellowIcon;
+  BitmapDescriptor pinRedIcon;
+  BitmapDescriptor pinPurpleIcon;
   Set<Marker> markers = new Set<Marker>();
   GoogleMapController mapController;
   LatLng _center = const LatLng(45.521563, -122.677433);
 
+
   setMapPosition(title, snippet) {
     mapController.animateCamera(CameraUpdate.newLatLng(_center));
-
+    BitmapDescriptor bmd = pinRedIcon;
+    if (snippet == "Posição Atual") {
+      bmd = pinPurpleIcon;
+    }
     final uuid = Uuid();
     Marker marker = Marker(
       markerId: MarkerId('${uuid.v4()}'),
       position: _center,
+      icon: bmd,
       infoWindow: InfoWindow(
         title: title,
         snippet: snippet,
@@ -30,9 +38,6 @@ class _MapaViewState extends State<MapaView> {
     );
 
     markers.add(marker);
-    markers.forEach((element) {
-      print (element.position);
-    });
     setState(() {});
   }
 
@@ -68,6 +73,31 @@ class _MapaViewState extends State<MapaView> {
     mapController = controller;
     marcaChamados();
     setCurrentLocation();
+  }
+
+  void setCustomMapPin() async {
+    pinBlueIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5.5),
+        'assets/images/blue-dot.png');
+    pinGreenIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5.5),
+        'assets/images/green-dot.png');
+    pinYellowIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5.5),
+        'assets/images/yellow-dot.png');
+    pinRedIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5.5),
+        'assets/images/red-dot.png');
+    pinPurpleIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5.5),
+        'assets/images/purple-dot.png');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setCustomMapPin();
+
   }
 
   @override
